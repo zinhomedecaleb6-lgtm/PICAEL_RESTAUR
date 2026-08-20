@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PICAEL RESTAUR - Menu Numérique</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            color: #333;
+            padding-bottom: 40px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #d9534f, #c9302c);
+            color: white;
+            text-align: center;
+            padding: 2.5rem 1rem 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+            margin-bottom: 0.3rem;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Boutons de filtres */
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-filter {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #555;
+            transition: all 0.3s;
+        }
+
+        .btn-filter.active, .btn-filter:hover {
+            background-color: #d9534f;
+            color: white;
+            border-color: #d9534f;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .card-price {
+            background-color: #e74c3c;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .card-text {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        /* Bouton WhatsApp */
+        .btn-whatsapp {
+            display: block;
+            text-align: center;
+            background-color: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #1eb954;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>PICAEL RESTAUR</h1>
+        <p>Menu Numérique & Commandes Rapides</p>
+    </header>
+
+    <!-- Boutons de catégories -->
+    <div class="categories">
+        <button class="btn-filter active" onclick="filtrerMenu('tous')">Tous</button>
+        <button class="btn-filter" onclick="filtrerMenu('Plats')">Plats</button>
+        <button class="btn-filter" onclick="filtrerMenu('Boissons')">Boissons</button>
+    </div>
+
+    <!-- Container des plats -->
+    <div class="container">
+        {% for plat in menu %}
+        <div class="card plat-item" data-categorie="{{ plat.categorie }}">
+            <img src="{{ plat.image }}" alt="{{ plat.nom }}">
+            <div class="card-body">
+                <div class="card-header">
+                    <span class="card-title">{{ plat.nom }}</span>
+                    <span class="card-price">{{ plat.prix }}</span>
+                </div>
+                <p class="card-text">{{ plat.description }}</p>
+                <a href="https://wa.me/22900000000?text=Bonjour,%20je%20souhaite%20commander%20:%20{{ plat.nom }}" target="_blank" class="btn-whatsapp">
+                    📲 Commander sur WhatsApp
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Script JavaScript pour le filtrage rapide -->
+    <script>
+        function filtrerMenu(categorie) {
+            let plats = document.querySelectorAll('.plat-item');
+            let boutons = document.querySelectorAll('.btn-filter');
+
+            // Mise à jour de l'apparence des boutons
+            boutons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Affichage filtré
+            plats.forEach(plat => {
+                if (categorie === 'tous' || plat.getAttribute('data-categorie') === categorie) {
+                    plat.style.display = 'block';
+                } else {
+                    plat.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
